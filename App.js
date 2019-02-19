@@ -8,15 +8,39 @@
  */
 
 import React, { Component } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text, TextInput, AlertIOS } from "react-native";
 
 export default class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleTextChange = this.handleTextChange.bind(this);
+    this.handleSubmitText = this.handleSubmitText.bind(this);
+  }
+
+  state = {
+    texto: "Cual es tu nombre"
+  };
+
+  handleTextChange(texto) {
+    this.setState({
+      texto
+    });
+  }
+
+  handleSubmitText() {
+    AlertIOS.alert('Tu nombre es ', `${this.state.texto}!!` );
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.box1} />
-        <View style={styles.box2} />
-        <View style={styles.box3} />
+        <TextInput
+          placeholder="¿Como te llamas...?"
+          onChangeText={this.handleTextChange}
+          onSubmitEditing={this.handleSubmitText}
+        />
+        <Text style={styles.texto}>{this.state.texto}</Text>
       </View>
     );
   }
@@ -25,22 +49,11 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between"
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center"
   },
-  box1: {
-    height: 120,
-    width: 100,
-    backgroundColor: "red"
-  },
-  box2: {
-    height: 120,
-    width: 100,
-    backgroundColor: "blue"
-  },
-  box3: {
-    height: 120,
-    width: 100,
-    backgroundColor: "green"
+  texto: {
+    fontSize: 20
   }
 });
