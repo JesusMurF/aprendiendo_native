@@ -20,10 +20,10 @@ export default class App extends Component {
           }}
           title="Button"
         />
-        <TouchableHighlight style={styles.touchableHighlight} underlayColor={'grey'} onPress={() => Alert.alert('Touchable highlight')}>
+        <TouchableHighlight style={[styles.touchable, styles.touchableHighlight]} underlayColor={'grey'} onPress={() => Alert.alert('Touchable highlight')}>
           <Text>My touchable highlight</Text>
         </TouchableHighlight>
-        <TouchableOpacity style={styles.touchableOpacity} onPress={() => Alert.alert('Touchable highlight')}>
+        <TouchableOpacity style={[styles.touchable, styles.touchableOpacity]} onPress={() => Alert.alert('Touchable highlight')}>
           <Text>Touchable opacity</Text>
         </TouchableOpacity>
         {/* Este es el boton que menos se usa */}
@@ -45,8 +45,7 @@ const styles = StyleSheet.create({
   texto: {
     fontSize: 20
   },
-  touchableHighlight: {
-    backgroundColor: 'moccasin',
+  touchable: {
     borderRadius: 50,
     width: 300,
     height: 50,
@@ -55,14 +54,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 10
   },
+  touchableHighlight: {
+    backgroundColor: 'moccasin'
+  },
   touchableOpacity: {
-    backgroundColor: 'deepskyblue',
-    borderRadius: 50,
-    width: 300,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 10,
-    marginTop: 10
+    backgroundColor: 'deepskyblue'
   }
 });
