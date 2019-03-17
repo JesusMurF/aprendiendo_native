@@ -8,74 +8,82 @@
  */
 
 import React, { Component } from "react";
-import { StyleSheet, View, Image, TouchableOpacity, Text, FlatList, ActivityIndicator } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  Text,
+  FlatList,
+  ScrollView,
+  ActivityIndicator,
+  AlertIOS
+} from "react-native";
 
 export default class App extends Component {
   state = {
-    //Assing a array to your pokeList state
-    pokeList: [],
-    //Have a loading state where when data retrieve returns data. 
+    pokemons: [],
     loading: true
-}
+  };
 
   async componentDidMount() {
-    //Have a try and catch block for catching errors.
-    try {
-        //Assign the promise unresolved first then get the data using the json method. 
-        const pokemonApiCall = await fetch('https://pokeapi.co/api/v2/pokemon/');
-        const pokemon = await pokemonApiCall.json();
-        this.setState({pokeList: pokemon.results, loading: false});
-    } catch(err) {
-        console.log("Error fetching data-----------", err);
-    }
-}
-
-renderItem(data) {
-  return <TouchableOpacity style={{backgroundColor: 'transparent'}}>
-              <View  style={styles.listItemContainer}>
-                  <Text style={styles.pokeItemHeader}>{data.item.name}</Text>
-                  <Image source={{uri: 'https://res.cloudinary.com/aa1997/image/upload/v1535930682/pokeball-image.jpg'}} 
-                          style={styles.pokeImage}/>
-              </View>
-          </TouchableOpacity>
-}
-render() {
-  //Destruct pokeList and Loading from state.
-  const { pokeList, loading } = this.state;
-  //If laoding to false, return a FlatList which will have data, rednerItem, and keyExtractor props used.
-  //Data contains the data being  mapped over.
-  //RenderItem a callback return UI for each item.
-  //keyExtractor used for giving a unique identifier for each item.
-  if(!loading) {
-      return <FlatList 
-              data={pokeList}
-              renderItem={this.renderItem}
-              keyExtractor={(item) => item.name} 
-              />
-  } else {
-      return <ActivityIndicator />
+    const response = await fetch("https://pokeapi.co/api/v2/pokemon/");
+    const responseJSON = await response.json();
+    this.setState({ pokemons: responseJSON.results, loading: false });
   }
-}
 
+  renderItem(data) {
+    return (
+      <TouchableOpacity onPress={() => AlertIOS.alert(data.item.name)}>
+        <View style={styles.list}>
+          <Text style={styles.item}>{data.item.name}</Text>
+          <Image
+            source={{
+              uri:
+                "https://pbs.twimg.com/profile_images/1103056143322996736/yFwE2PJv_400x400.png"
+            }}
+            style={styles.image}
+          />
+        </View>
+      </TouchableOpacity>
+    );
+  }
+  render() {
+    const { pokemons, loading } = this.state;
+    if (!loading) {
+      return (
+        <ScrollView>
+          <FlatList
+            data={pokemons}
+            renderItem={this.renderItem}
+            keyExtractor={item => item.name}
+          />
+        </ScrollView>
+      );
+    } else {
+      return <ActivityIndicator />;
+    }
+  }
 }
 
 const styles = StyleSheet.create({
-  listItemContainer: {
-      backgroundColor: 'white',
-      borderStyle: 'solid',
-      borderColor: '#000',
-      borderBottomWidth: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      padding: 20
+  list: {
+    backgroundColor: "white",
+    borderStyle: "solid",
+    borderColor: "#000",
+    borderBottomWidth: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingLeft: 10,
+    paddingRight: 10
   },
-  pokeItemHeader: {  
-      color: '#000',
-      fontSize: 24,
+  item: {
+    color: "#000",
+    fontSize: 20
   },
-  pokeImage: {
-      backgroundColor: 'transparent',
-      height: 50,
-      width: 50
+  image: {
+    height: 50,
+    width: 50
   }
-})
+});
