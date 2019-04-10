@@ -35,8 +35,8 @@ export default class App extends Component {
   renderItem(data) {
     return (
       <TouchableOpacity onPress={() => AlertIOS.alert(data.item.name)}>
-        <View style={styles.list}>
-          <Text style={styles.item}>{data.item.name}</Text>
+        <View style={styles.item}>
+          <Text style={styles.text}>{data.item.name}</Text>
           <Image
             source={{
               uri:
@@ -67,7 +67,7 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
-  list: {
+  item: {
     backgroundColor: "white",
     borderStyle: "solid",
     borderColor: "#000",
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10
   },
-  item: {
+  text: {
     color: "#000",
     fontSize: 20
   },
