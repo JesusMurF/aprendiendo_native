@@ -8,17 +8,16 @@
  */
 
 import React, { Component } from "react";
+import { Text, FlatList, ActivityIndicator, AlertIOS } from "react-native";
 import {
-  StyleSheet,
-  View,
-  Image,
-  TouchableOpacity,
-  Text,
-  FlatList,
-  ScrollView,
-  ActivityIndicator,
-  AlertIOS
-} from "react-native";
+  Container,
+  Content,
+  List,
+  ListItem,
+  Right,
+  Thumbnail,
+  Left
+} from "native-base";
 
 export default class App extends Component {
   state = {
@@ -34,56 +33,38 @@ export default class App extends Component {
 
   renderItem(data) {
     return (
-      <TouchableOpacity onPress={() => AlertIOS.alert(data.item.name)}>
-        <View style={styles.item}>
-          <Text style={styles.text}>{data.item.name}</Text>
-          <Image
+      <ListItem onPress={() => AlertIOS.alert(data.item.name)}>
+        <Left>
+          <Text>{data.item.name}</Text>
+        </Left>
+        <Right>
+          <Thumbnail
             source={{
               uri:
                 "https://pbs.twimg.com/profile_images/1103056143322996736/yFwE2PJv_400x400.png"
             }}
-            style={styles.image}
           />
-        </View>
-      </TouchableOpacity>
+        </Right>
+      </ListItem>
     );
   }
+
   render() {
     const { pokemons, loading } = this.state;
     if (!loading) {
       return (
-        <ScrollView>
-          <FlatList
-            data={pokemons}
-            renderItem={this.renderItem}
-            keyExtractor={item => item.name}
-          />
-        </ScrollView>
+        <Container>
+          <Content>
+            <FlatList
+              data={pokemons}
+              renderItem={this.renderItem}
+              keyExtractor={item => item.name}
+            />
+          </Content>
+        </Container>
       );
     } else {
-      return <ActivityIndicator />;
+      return <ActivityIndicator size="large" color="#000000" />;
     }
   }
 }
-
-const styles = StyleSheet.create({
-  item: {
-    backgroundColor: "white",
-    borderStyle: "solid",
-    borderColor: "#000",
-    borderBottomWidth: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingLeft: 10,
-    paddingRight: 10
-  },
-  text: {
-    color: "#000",
-    fontSize: 20
-  },
-  image: {
-    height: 50,
-    width: 50
-  }
-});
